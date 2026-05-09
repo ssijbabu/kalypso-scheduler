@@ -24,7 +24,10 @@ jobs:
 
       - name: Generate Image Tag
         run: |
-           IMAGE_TAG=${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ vars.HF_VERSION }}-${{ github.run_number }}
+           MAJOR=${{ vars.MAJOR_VERSION || '0' }}
+           MINOR=${{ vars.MINOR_VERSION || '1' }}
+           HF=${{ vars.HF_VERSION || '0' }}
+           IMAGE_TAG=${MAJOR}.${MINOR}.${HF}-${{ github.run_number }}
            echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV          
            echo $IMAGE_TAG > $GITHUB_WORKSPACE/IMAGE_TAG
 
@@ -37,7 +40,7 @@ jobs:
           push: true
           context: .
           file: Dockerfile
-          tags: ghcr.io/microsoft/kalypso-scheduler:${{ env.IMAGE_TAG }}, ghcr.io/microsoft/kalypso-scheduler:latest
+          tags: docker.io/ssijbabu/kalypso-scheduler:${{ env.IMAGE_TAG }}, docker.io/ssijbabu/kalypso-scheduler:latest
           platforms: ${{ vars.PLATFORMS }}                  
 
       - name: Upload Image Tags
@@ -69,11 +72,11 @@ jobs:
 
       - name: Build Helm Chart
         run: |
-           export IMG=ghcr.io/microsoft/kalypso-scheduler:${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ vars.HF_VERSION }}-${{ github.run_number }}
+           export IMG=docker.io/ssijbabu/kalypso-scheduler:${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ vars.HF_VERSION }}-${{ github.run_number }}
            make helm-build
 
       - name: Publish Helm chart
-        uses: stefanprodan/helm-gh-pages@master
+        uses: ssijbabu/helm-gh-pages@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           charts_dir: ./helm
