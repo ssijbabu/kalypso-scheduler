@@ -76,7 +76,7 @@ jobs:
            make helm-build
 
       - name: Publish Helm chart
-        uses: ssijbabu/helm-gh-pages@master
+        uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           charts_dir: ./helm
