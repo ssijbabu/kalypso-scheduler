@@ -83,7 +83,7 @@ metadata:
 spec:
   type: reconciler
   manifests:
-    - apiVersion: source.toolkit.fluxcd.io/v1beta2
+    - apiVersion: source.toolkit.fluxcd.io/v1
       kind: GitRepository
       metadata:
         name: "{{ .DeploymentTargetName}}"
@@ -93,7 +93,7 @@ spec:
         url: "{{ .Repo}}"
         ref:
           branch: "{{ .Branch}}"
-    - apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+    - apiVersion: kustomize.toolkit.fluxcd.io/v1
       kind: Kustomization
       metadata:
         name: "{{ .DeploymentTargetName}}"
